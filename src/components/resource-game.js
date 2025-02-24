@@ -89,20 +89,20 @@ const ResourceGame = () => {
             <div key={player.id} className="bg-gray-50 p-6 rounded-lg shadow">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-3">
-                  <Users className="w-6 h-6 text-gray-600" />
-                  <span className="text-lg font-semibold">{player.name}</span>
+                  <Users className="w-6 h-6 text-gray-800" />
+                  <span className="text-lg font-semibold text-gray-900">{player.name}</span>
                 </div>
-                <div className="text-xl">Total: {player.fish}</div>
+                <div className="text-xl font-medium text-gray-900">Total: {player.fish}</div>
                 <div className="flex items-center gap-3">
-                  <span>Harvest:</span>
+                  <span className="text-gray-900 font-medium">Harvest:</span>
                   <select 
                     value={player.currentHarvest}
                     onChange={(e) => updateHarvest(player.id, parseInt(e.target.value))}
-                    className="border rounded-md p-2 w-20"
+                    className="border-2 border-gray-300 rounded-md p-2 w-20 text-gray-900 font-medium bg-white"
                     disabled={gameStatus === 'finished'}
                   >
                     {[0, 1, 2, 3].map(n => (
-                      <option key={n} value={n}>{n}</option>
+                      <option key={n} value={n} className="text-gray-900">{n}</option>
                     ))}
                   </select>
                 </div>
