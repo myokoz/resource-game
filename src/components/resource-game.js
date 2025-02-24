@@ -133,24 +133,24 @@ const ResourceGame = () => {
 
         {gameHistory.length > 0 && (
           <div className="mt-8">
-            <h3 className="text-2xl font-bold mb-4">Game History</h3>
-            <div className="overflow-x-auto">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Game History</h3>
+            <div className="overflow-x-auto rounded-lg border-gray-200">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="p-3 text-left">Round</th>
-                    <th className="p-3 text-left">Pool Size</th>
-                    <th className="p-3 text-left">Total Harvest</th>
-                    <th className="p-3 text-left">New Pool Size</th>
+                  <tr className="bg-gray-100">
+                    <th className="p-4 text-left text-gray-900 border-b">Round</th>
+                    <th className="p-4 text-left text-gray-900 border-b">Pool Size</th>
+                    <th className="p-4 text-left text-gray-900 border-b">Total Harvest</th>
+                    <th className="p-4 text-left text-gray-900 border-b">New Pool Size</th>
                   </tr>
                 </thead>
                 <tbody>
                   {gameHistory.map((history, i) => (
-                    <tr key={i} className="border-t">
-                      <td className="p-3">{history.round}</td>
-                      <td className="p-3">{history.poolSize}</td>
-                      <td className="p-3">{history.totalHarvest}</td>
-                      <td className="p-3">{history.newPoolSize}</td>
+                    <tr key={i} className="border-b hover:bg-gray-50">
+                      <td className="p-4 text-gray-900">{history.round}</td>
+                      <td className="p-4 text-gray-900">{history.poolSize}</td>
+                      <td className="p-4 text-gray-900">{history.totalHarvest}</td>
+                      <td className="p-4 text-gray-900">{history.newPoolSize}</td>
                     </tr>
                   ))}
                 </tbody>
