@@ -1,9 +1,5 @@
-import ResourceGame from '@/components/resource-game';
+import ClientPage from './client-page';
 
 export default function Home() {
-  return (
-    <main className="min-h-screen bg-gray-100 p-4">
-      <ResourceGame />
-    </main>
-  );
+  return <ClientPage />;
 }
