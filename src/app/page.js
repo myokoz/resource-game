@@ -1,5 +1,11 @@
-import ClientPage from './client-page';
+"use client";
+
+import ResourceGame from '@/components/resource-game';
 
 export default function Home() {
-  return <ClientPage />;
+  return (
+    <main className="min-h-screen bg-gray-100 p-4">
+      <ResourceGame />
+    </main>
+  );
 }
