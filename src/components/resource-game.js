@@ -4,95 +4,39 @@ import React, { useState, useEffect } from 'react';
 import { Fish, Users } from 'lucide-react';
 
 const ResourceGame = () => {
-  const [poolSize, setPoolSize] = useState(20);
-  const [round, setRound] = useState(1);
-  const [players, setPlayers] = useState([
-    { id: 1, name: 'Player 1', fish: 0, currentHarvest: 0 },
-    { id: 2, name: 'Player 2', fish: 0, currentHarvest: 0 },
-    { id: 3, name: 'Player 3', fish: 0, currentHarvest: 0 },
-    { id: 4, name: 'Player 4', fish: 0, currentHarvest: 0 }
-  ]);
-  const [gameHistory, setGameHistory] = useState([]);
-  const [gameStatus, setGameStatus] = useState('playing');
-  const MAX_ROUNDS = 10;
-  const POOL_LIMIT = 30;
-
-  const updateHarvest = (playerId, amount) => {
-    if (amount > 3 || amount < 0) return;
-    if (amount > poolSize) return;
-
-    setPlayers(players.map(player => 
-      player.id === playerId 
-        ? { ...player, currentHarvest: amount }
-        : player
-    ));
-  };
-
-  const processRound = () => {
-    const totalHarvest = players.reduce((sum, p) => sum + p.currentHarvest, 0);
-    
-    if (totalHarvest > poolSize) {
-      return false;
-    }
-
-    const newPoolSize = Math.min(
-      Math.floor((poolSize - totalHarvest) * 1.5),
-      POOL_LIMIT
-    );
-
-    setGameHistory(prev => [...prev, {
-      round,
-      poolSize,
-      totalHarvest,
-      newPoolSize,
-      playerHarvests: [...players.map(p => p.currentHarvest)]
-    }]);
-
-    setPoolSize(newPoolSize);
-
-    setPlayers(players.map(player => ({
-      ...player,
-      fish: player.fish + player.currentHarvest,
-      currentHarvest: 0
-    })));
-
-    setRound(round + 1);
-
-    if (round >= MAX_ROUNDS || newPoolSize === 0) {
-      setGameStatus('finished');
-    }
-
-    return true;
-  };
+  // ... 既存のステート管理コード ...
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <div className="bg-white shadow rounded-lg p-6 mb-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Resource Management Game</h2>
-          <span className="text-sm">Round {round}/{MAX_ROUNDS}</span>
+    <div className="p-8 max-w-6xl mx-auto bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg p-8 mb-6">
+        {/* ヘッダー部分 */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-bold text-gray-800">Resource Management Game</h2>
+          <span className="text-lg font-semibold text-gray-600">Round {round}/{MAX_ROUNDS}</span>
         </div>
 
-        <div className="flex items-center gap-2 mb-4">
-          <Fish className="text-blue-500" />
-          <span>Pool Size: {poolSize}</span>
+        {/* プール情報 */}
+        <div className="flex items-center gap-3 mb-6 text-xl text-blue-600 bg-blue-50 p-4 rounded-lg">
+          <Fish className="w-8 h-8" />
+          <span className="font-semibold">Pool Size: {poolSize}</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* プレイヤーグリッド */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {players.map(player => (
-            <div key={player.id} className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>{player.name}</span>
+            <div key={player.id} className="bg-gray-50 p-6 rounded-lg shadow-md">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-3">
+                  <Users className="w-6 h-6 text-gray-600" />
+                  <span className="text-lg font-semibold text-gray-800">{player.name}</span>
                 </div>
-                <div>Total: {player.fish}</div>
-                <div className="flex items-center gap-2">
-                  Harvest:
+                <div className="text-xl text-gray-700">Total: {player.fish}</div>
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-700">Harvest:</span>
                   <select 
                     value={player.currentHarvest}
                     onChange={(e) => updateHarvest(player.id, parseInt(e.target.value))}
-                    className="border rounded p-1"
+                    className="border-2 rounded-md p-2 text-lg bg-white"
                     disabled={gameStatus === 'finished'}
                   >
                     {[0, 1, 2, 3].map(n => (
@@ -105,44 +49,49 @@ const ResourceGame = () => {
           ))}
         </div>
 
+        {/* アクションボタン */}
         <button
           onClick={processRound}
           disabled={gameStatus === 'finished'}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+          className="mt-8 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           End Round
         </button>
 
+        {/* ゲーム終了メッセージ */}
         {gameStatus === 'finished' && (
-          <div className="mt-4 p-4 bg-yellow-100 rounded-lg">
-            Game Over! Winner: {
-              players.reduce((prev, current) => 
-                (prev.fish > current.fish) ? prev : current
-              ).name
-            }
+          <div className="mt-6 p-6 bg-yellow-100 border-l-4 border-yellow-400 rounded-lg">
+            <p className="text-xl font-semibold text-yellow-800">
+              Game Over! Winner: {
+                players.reduce((prev, current) => 
+                  (prev.fish > current.fish) ? prev : current
+                ).name
+              }
+            </p>
           </div>
         )}
 
+        {/* ゲーム履歴 */}
         {gameHistory.length > 0 && (
-          <div className="mt-6">
-            <h3 className="font-bold mb-2">Game History</h3>
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Game History</h3>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full">
                 <thead>
-                  <tr>
-                    <th className="text-left p-2">Round</th>
-                    <th className="text-left p-2">Pool Size</th>
-                    <th className="text-left p-2">Total Harvest</th>
-                    <th className="text-left p-2">New Pool Size</th>
+                  <tr className="bg-gray-50">
+                    <th className="px-6 py-3 text-left text-lg font-semibold text-gray-700">Round</th>
+                    <th className="px-6 py-3 text-left text-lg font-semibold text-gray-700">Pool Size</th>
+                    <th className="px-6 py-3 text-left text-lg font-semibold text-gray-700">Total Harvest</th>
+                    <th className="px-6 py-3 text-left text-lg font-semibold text-gray-700">New Pool Size</th>
                   </tr>
                 </thead>
                 <tbody>
                   {gameHistory.map((history, i) => (
-                    <tr key={i} className="border-t">
-                      <td className="p-2">{history.round}</td>
-                      <td className="p-2">{history.poolSize}</td>
-                      <td className="p-2">{history.totalHarvest}</td>
-                      <td className="p-2">{history.newPoolSize}</td>
+                    <tr key={i} className="border-t hover:bg-gray-50">
+                      <td className="px-6 py-4 text-gray-800">{history.round}</td>
+                      <td className="px-6 py-4 text-gray-800">{history.poolSize}</td>
+                      <td className="px-6 py-4 text-gray-800">{history.totalHarvest}</td>
+                      <td className="px-6 py-4 text-gray-800">{history.newPoolSize}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -156,3 +105,4 @@ const ResourceGame = () => {
 };
 
 export default ResourceGame;
+
